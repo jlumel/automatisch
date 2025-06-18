@@ -5,7 +5,7 @@ services:
     plan: free
     dockerfilePath: ./docker/Dockerfile
     dockerContext: .
-    repo: https://github.com/TU_USUARIO/automatisch
+    repo: https://github.com/jlumel/automatisch
     autoDeploy: false
     envVars:
       - key: HOST
