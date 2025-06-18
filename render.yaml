@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: automatisch-main
+    name: automatisch
     env: docker
     dockerfilePath: ./docker/Dockerfile
     dockerContext: .
@@ -9,28 +9,28 @@ services:
     envVars:
       - key: HOST
         fromService:
-          name: automatisch-main
+          name: automatisch
           type: web
           envVarKey: RENDER_EXTERNAL_HOSTNAME
       - key: POSTGRES_HOST
         fromDatabase:
-          name: automatisch-database
+          name: automatisch-db
           property: host
       - key: POSTGRES_PORT
         fromDatabase:
-          name: automatisch-database
+          name: automatisch-db
           property: port
       - key: POSTGRES_DATABASE
         fromDatabase:
-          name: automatisch-database
+          name: automatisch-db
           property: database
       - key: POSTGRES_USERNAME
         fromDatabase:
-          name: automatisch-database
+          name: automatisch-db
           property: user
       - key: POSTGRES_PASSWORD
         fromDatabase:
-          name: automatisch-database
+          name: automatisch-db
           property: password
       - key: REDIS_HOST
         fromService:
@@ -43,59 +43,18 @@ services:
           name: automatisch-redis
           property: port
       - fromGroup: common-env-vars
-  - type: worker
-    name: automatisch-worker
-    env: docker
-    dockerfilePath: ./docker/Dockerfile
-    dockerContext: .
-    repo: https://github.com/automatisch/automatisch
-    autoDeploy: false
-    envVars:
-      - key: WORKER
-        value: true
-      - key: HOST
-        fromService:
-          name: automatisch-main
-          type: web
-          envVarKey: RENDER_EXTERNAL_HOSTNAME
-      - key: POSTGRES_HOST
-        fromDatabase:
-          name: automatisch-database
-          property: host
-      - key: POSTGRES_PORT
-        fromDatabase:
-          name: automatisch-database
-          property: port
-      - key: POSTGRES_DATABASE
-        fromDatabase:
-          name: automatisch-database
-          property: database
-      - key: POSTGRES_USERNAME
-        fromDatabase:
-          name: automatisch-database
-          property: user
-      - key: POSTGRES_PASSWORD
-        fromDatabase:
-          name: automatisch-database
-          property: password
-      - key: REDIS_HOST
-        fromService:
-          type: redis
-          name: automatisch-redis
-          property: host
-      - key: REDIS_PORT
-        fromService:
-          type: redis
-          name: automatisch-redis
-          property: port
-      - fromGroup: common-env-vars
+
   - type: redis
     name: automatisch-redis
-    ipAllowList: [] # allow only internal connections
+    ipAllowList: [] # solo conexiones internas
     maxmemoryPolicy: noeviction
+    plan: free # 👈 usa el plan gratuito
+
 databases:
-  - name: automatisch-database
+  - name: automatisch-db
     databaseName: automatisch
+    plan: free # 👈 usa el plan gratuito
+
 envVarGroups:
   - name: common-env-vars
     envVars:
