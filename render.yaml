@@ -2,9 +2,10 @@ services:
   - type: web
     name: automatisch
     env: docker
+    plan: free
     dockerfilePath: ./docker/Dockerfile
     dockerContext: .
-    repo: https://github.com/automatisch/automatisch
+    repo: https://github.com/TU_USUARIO/automatisch
     autoDeploy: false
     envVars:
       - key: HOST
@@ -46,14 +47,14 @@ services:
 
   - type: redis
     name: automatisch-redis
-    ipAllowList: [] # solo conexiones internas
+    plan: free
+    ipAllowList: []
     maxmemoryPolicy: noeviction
-    plan: free # 👈 usa el plan gratuito
 
 databases:
   - name: automatisch-db
     databaseName: automatisch
-    plan: free # 👈 usa el plan gratuito
+    plan: free
 
 envVarGroups:
   - name: common-env-vars
